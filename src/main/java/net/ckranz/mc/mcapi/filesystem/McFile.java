@@ -1,5 +1,6 @@
 package net.ckranz.mc.mcapi.filesystem;
 
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.*;
@@ -17,8 +18,9 @@ public class McFile {
     private McFile(File file) {
         this.file = file;
         try {
-            yamlFile = YamlConfiguration.loadConfiguration((new InputStreamReader(Files.newInputStream(file.toPath()), StandardCharsets.UTF_16)));
-        } catch(IOException e) {
+            yamlFile = new YamlConfiguration();
+            yamlFile.load(new InputStreamReader(Files.newInputStream(file.toPath()), StandardCharsets.UTF_16));
+        } catch(IOException | InvalidConfigurationException e) {
             throw new RuntimeException(e);
         }
         files.put(file, this);
